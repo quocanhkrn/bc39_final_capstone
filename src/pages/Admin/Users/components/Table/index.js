@@ -75,8 +75,8 @@ const DataTable = (props) => {
 
   return (
     <>
-      <Paper sx={{ overflow: "hidden" }}>
-        <TableContainer component={Paper} sx={{ maxHeight: 500 }}>
+      <Paper sx={{ width: "100%" }}>
+        <TableContainer sx={{ maxHeight: "100%" }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
@@ -89,7 +89,7 @@ const DataTable = (props) => {
                 <TableCell>Role</TableCell>
                 <TableCell>Skills</TableCell>
                 <TableCell>Certifications</TableCell>
-                <TableCell></TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -108,12 +108,12 @@ const DataTable = (props) => {
                     <TableCell>{role}</TableCell>
                     <TableCell>
                       {skill?.map((skill) => {
-                        return <Chip key={skill} label={skill} />;
+                        return <Chip key={skill} label={skill} sx={{ m: 1 }} />;
                       })}
                     </TableCell>
                     <TableCell>
                       {certification?.map((certification) => {
-                        return <Chip key={certification} label={certification} />;
+                        return <Chip key={certification} label={certification} sx={{ m: 1 }} />;
                       })}
                     </TableCell>
                     <TableCell>
