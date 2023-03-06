@@ -89,7 +89,7 @@ const Admin = () => {
             </Drawer>
           </Grid>
           <Grid xs={12} md sx={{ px: { xs: 5, md: 0 }, py: 4, pl: { md: 30 } }}>
-            {/* <Outlet /> */}
+            <Outlet />
           </Grid>
         </Grid>
       </Box>
