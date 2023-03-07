@@ -1,14 +1,10 @@
 import "./reset.css";
 import "./style.css";
-import { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
-import { CategoryRounded, MiscellaneousServicesRounded, PeopleAltRounded, WorkRounded } from "@mui/icons-material";
+import { Box } from "@mui/material";
 
 const Admin = () => {
-  const navigate = useNavigate();
-
   document.title = "FIVERR ADMINSPACE";
 
   if (!localStorage.getItem("admin-account")) {

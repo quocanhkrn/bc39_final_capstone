@@ -13,11 +13,17 @@ import {
   ButtonGroup,
   Button,
   Chip,
+  DialogTitle,
+  Dialog,
+  DialogActions,
+  DialogContent,
 } from "@mui/material";
 import { LastPage, FirstPage, KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteUserSendRequest } from "../../_duck/actions";
 
-function TablePaginationActions(props) {
+const TablePaginationActions = (props) => {
   const { count, page, rowsPerPage, onPageChange } = props;
 
   const handleFirstPageButtonClick = (event) => {
@@ -52,17 +58,14 @@ function TablePaginationActions(props) {
       </IconButton>
     </Box>
   );
-}
+};
 
 const DataTable = (props) => {
+  const { getUser } = props;
+  const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
   const { data } = props;
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
@@ -71,6 +74,10 @@ const DataTable = (props) => {
   const handleChangeRowsPerPage = (e) => {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
+  };
+
+  const handleDeleteUser = (id) => {
+    dispatch(deleteUserSendRequest(id));
   };
 
   return (
@@ -93,7 +100,7 @@ const DataTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {(rowsPerPage > 0 ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data).map((row) => {
                 const { id, avatar, name, email, phone, birthday, role, skill, certification } = row;
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
@@ -118,8 +125,10 @@ const DataTable = (props) => {
                     </TableCell>
                     <TableCell>
                       <ButtonGroup variant="contained" size="small">
-                        <Button>EDIT</Button>
-                        <Button color="error">DELETE</Button>
+                        <Button onClick={() => getUser(row)}>EDIT</Button>
+                        <Button color="error" onClick={() => handleDeleteUser(id)}>
+                          DELETE
+                        </Button>
                       </ButtonGroup>
                     </TableCell>
                   </TableRow>
