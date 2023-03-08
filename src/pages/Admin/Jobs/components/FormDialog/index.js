@@ -16,7 +16,6 @@ import {
   InputAdornment,
   Rating,
   Typography,
-  Input,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,18 +55,6 @@ const FormDialog = (props) => {
     let { name, value } = e.target;
 
     switch (name) {
-      case "hinhAnh":
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onloadend = () => {
-          const blob = new Blob([reader.result], { type: file.type });
-          setJob((prevJob) => {
-            return { ...prevJob, hinhAnhBlob: blob, hinhAnhSrc: URL.createObjectURL(file) };
-          });
-        };
-        break;
-
       case "danhGia":
       case "saoCongViec":
         setJob((prevJob) => {
@@ -172,7 +159,7 @@ const FormDialog = (props) => {
                 <Select
                   labelId="catagory-select-lable"
                   name="maChiTietLoaiCongViec"
-                  value={job?.maChiTietLoaiCongViec || ""}
+                  value={job?.maChiTietLoaiCongViec || categoryList[0]?.id}
                   required
                   label="Category"
                   onChange={handleOnChange}
@@ -229,10 +216,6 @@ const FormDialog = (props) => {
                 fullWidth
                 margin="none"
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Input type="file" name="hinhAnh" onChange={handleOnChange} variant="standard" fullWidth margin="none" sx={{ mb: 1 }} />
-              <img src={job?.hinhAnh || ""} width={"100%"} />
             </Grid>
           </Grid>
         </DialogContent>

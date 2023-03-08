@@ -29,13 +29,14 @@ const actGetJobFail = (error) => {
   };
 };
 
-export const addJobSendRequest = (user) => {
+export const addJobSendRequest = (job, setJob) => {
   return (dispatch) => {
     dispatch(actAddJobRequest());
     api
-      .post("users", user)
+      .post("cong-viec", job)
       .then((res) => {
-        dispatch(actAddJobSuccess("Thêm người dùng thành công"));
+        dispatch(actAddJobSuccess("Thêm công việc thành công"));
+        setJob(null);
         dispatch(getJobSendRequest());
       })
       .catch((err) => dispatch(actAddJobFail(err.response.data.content)));
@@ -60,14 +61,14 @@ const actAddJobFail = (error) => {
   };
 };
 
-export const updateJobSendRequest = (user, setUser) => {
+export const updateJobSendRequest = (job, setJob) => {
   return (dispatch) => {
     dispatch(actUpdateJobRequest());
     api
-      .put(`users/${user.id}`, user)
+      .put(`cong-viec/${job.id}`, job)
       .then((res) => {
-        dispatch(actUpdateJobSuccess("Cập nhật người dùng thành công"));
-        setUser(null);
+        dispatch(actUpdateJobSuccess("Cập nhật công việc thành công"));
+        setJob(null);
         dispatch(getJobSendRequest());
       })
       .catch((err) => dispatch(actUpdateJobFail(err.response.data.content)));

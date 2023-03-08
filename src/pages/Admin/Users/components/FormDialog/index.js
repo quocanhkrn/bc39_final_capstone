@@ -31,6 +31,7 @@ const FormDialog = (props) => {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
+
     setUser((prevUser) => {
       return { ...prevUser, [name]: value };
     });
@@ -38,6 +39,7 @@ const FormDialog = (props) => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+
     if (propUser) {
       dispatch(updateUserSendRequest(user, setUser));
     } else {
