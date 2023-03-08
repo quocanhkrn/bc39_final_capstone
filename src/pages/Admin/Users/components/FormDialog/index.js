@@ -152,7 +152,7 @@ const FormDialog = (props) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={() => handleClose(setUser)}>Cancel</Button>
           <Button variant="contained" type="submit">
             Submit
           </Button>

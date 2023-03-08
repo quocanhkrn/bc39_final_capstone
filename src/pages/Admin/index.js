@@ -5,8 +5,6 @@ import Navbar from "./components/Navbar";
 import { Box } from "@mui/material";
 
 const Admin = () => {
-  document.title = "FIVERR ADMINSPACE";
-
   if (!localStorage.getItem("admin-account")) {
     return <Navigate to={"signin"} />;
   }

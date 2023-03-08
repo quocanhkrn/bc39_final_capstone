@@ -10,11 +10,11 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   config.headers = {
     ...config.headers,
-    TokenCybersoft: TOKEN_CYBERSOFT,
-    Authorization: localStorage.getItem("admin-account")
-      ? `Bearer ${JSON.parse(localStorage.getItem("admin-account")).token}`
+    tokenCybersoft: TOKEN_CYBERSOFT,
+    token: localStorage.getItem("admin-account")
+      ? JSON.parse(localStorage.getItem("admin-account")).token
       : localStorage.getItem("guest-account")
-      ? `Bearer ${JSON.parse(localStorage.getItem("guest-account")).token}`
+      ? JSON.parse(localStorage.getItem("guest-account")).token
       : "",
   };
   return config;

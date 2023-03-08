@@ -9,19 +9,15 @@ import {
   TableRow,
   Box,
   IconButton,
-  Avatar,
   ButtonGroup,
   Button,
-  Chip,
-  DialogTitle,
-  Dialog,
-  DialogActions,
-  DialogContent,
+  Typography,
+  Rating,
 } from "@mui/material";
 import { LastPage, FirstPage, KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteUserSendRequest } from "../../_duck/actions";
+import { deleteJobSendRequest } from "../../_duck/actions";
 
 const TablePaginationActions = (props) => {
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -61,15 +57,27 @@ const TablePaginationActions = (props) => {
 };
 
 const DataTable = (props) => {
-  const { getUser } = props;
+  const { getJob, data, userData, categoryData } = props;
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { data } = props;
 
   useEffect(() => {
     setPage(0);
   }, [data]);
+
+  const getCategoryName = (id) => {
+    let categoryName = "";
+    categoryData?.forEach((group) => {
+      group.dsChiTietLoai.forEach((category) => {
+        if (category.id === id) {
+          categoryName = category.tenChiTiet;
+          return [categoryName, group];
+        }
+      });
+    });
+    return categoryName;
+  };
 
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
@@ -80,8 +88,8 @@ const DataTable = (props) => {
     setPage(0);
   };
 
-  const handleDeleteUser = (id) => {
-    dispatch(deleteUserSendRequest(id));
+  const handleDeleteJob = (id) => {
+    dispatch(deleteJobSendRequest(id));
   };
 
   return (
@@ -91,46 +99,70 @@ const DataTable = (props) => {
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Avatar</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Birthday</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Skills</TableCell>
-                <TableCell>Certifications</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell align="center">ID</TableCell>
+                <TableCell align="center" width={"150px"}>
+                  Cover
+                </TableCell>
+                <TableCell align="center">Name</TableCell>
+                <TableCell align="center">Created by</TableCell>
+                <TableCell align="center">Category</TableCell>
+                <TableCell align="center">Price</TableCell>
+                <TableCell align="center">Score</TableCell>
+                <TableCell align="center">Rating</TableCell>
+                <TableCell align="center">Brief description</TableCell>
+                <TableCell align="center">Description</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0 ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data).map((row) => {
-                const { id, avatar, name, email, phone, birthday, role, skill, certification } = row;
+                let { id, tenCongViec, danhGia, giaTien, nguoiTao, hinhAnh, moTa, maChiTietLoaiCongViec, moTaNgan, saoCongViec } = row;
+
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                     <TableCell>{id}</TableCell>
                     <TableCell>
-                      <Avatar src={avatar} />
+                      <img width={"100%"} src={hinhAnh} />
                     </TableCell>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>{email}</TableCell>
-                    <TableCell>{phone}</TableCell>
-                    <TableCell>{birthday}</TableCell>
-                    <TableCell>{role}</TableCell>
+                    <TableCell>{tenCongViec}</TableCell>
+                    <TableCell>{userData ? userData.find((user) => user.id === nguoiTao).name : ""}</TableCell>
+                    <TableCell>{getCategoryName(maChiTietLoaiCongViec)}</TableCell>
+                    <TableCell>${giaTien}</TableCell>
+                    <TableCell>{danhGia}</TableCell>
                     <TableCell>
-                      {skill?.map((skill) => {
-                        return <Chip key={skill} label={skill} sx={{ m: 1 }} />;
-                      })}
+                      <Rating value={saoCongViec} readOnly />
                     </TableCell>
-                    <TableCell>
-                      {certification?.map((certification) => {
-                        return <Chip key={certification} label={certification} sx={{ m: 1 }} />;
-                      })}
+                    <TableCell width={"300px"}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          lineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}>
+                        {moTaNgan}
+                      </Typography>
+                    </TableCell>
+                    <TableCell width={"300px"}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          lineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}>
+                        {moTa}
+                      </Typography>
                     </TableCell>
                     <TableCell>
                       <ButtonGroup variant="contained" size="small">
-                        <Button onClick={() => getUser(row)}>EDIT</Button>
-                        <Button color="error" onClick={() => handleDeleteUser(id)}>
+                        <Button onClick={() => getJob(row)}>EDIT</Button>
+                        <Button color="error" onClick={() => handleDeleteJob(id)}>
                           DELETE
                         </Button>
                       </ButtonGroup>

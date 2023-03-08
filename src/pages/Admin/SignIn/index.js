@@ -24,6 +24,8 @@ const SignIn = () => {
     dispatch(signInSendRequest(user, navigate));
   };
 
+  document.title = "SIGNIN | FIVERR ADMINSPACE";
+
   return (
     <Container maxWidth="md" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100vh" }}>
       <Typography variant="h3" color="primary" sx={{ fontWeight: "bold" }}>
