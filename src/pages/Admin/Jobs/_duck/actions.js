@@ -4,9 +4,25 @@ import * as TYPES from "./types";
 export const getJobSendRequest = () => {
   return (dispatch) => {
     dispatch(actGetJobRequest());
+
+    let data = [];
+
     api
       .get("cong-viec")
-      .then((res) => dispatch(actGetJobSuccess(res.data.content)))
+      .then((res) => {
+        data = [...res.data.content];
+
+        data.forEach((job) => {
+          const { maChiTietLoaiCongViec } = job;
+
+          api.get(`chi-tiet-loai-cong-viec/${maChiTietLoaiCongViec}`).then((res) => {
+            job.chiTietLoaiCongViec = res.data.content.tenChiTiet;
+          });
+        });
+      })
+      .then(() => {
+        dispatch(actGetJobSuccess(data));
+      })
       .catch((err) => dispatch(actGetJobFail(err.response.data.content)));
   };
 };

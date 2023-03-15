@@ -125,6 +125,13 @@ const Navbar = () => {
               }}>
               <Typography textAlign="center">Categories</Typography>
             </MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate("/admin/orders");
+                handleCloseNavMenu();
+              }}>
+              <Typography textAlign="center">Orders</Typography>
+            </MenuItem>
           </Menu>
         </Box>
         <Typography
@@ -147,6 +154,9 @@ const Navbar = () => {
           </Button>
           <Button sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate("/admin/categories")}>
             Categories
+          </Button>
+          <Button sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate("/admin/orders")}>
+            Orders
           </Button>
         </Box>
         {renderUserOrLogin()}

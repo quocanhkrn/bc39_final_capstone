@@ -29,12 +29,13 @@ const actGetUserFail = (error) => {
   };
 };
 
-export const addUserSendRequest = (user) => {
+export const addUserSendRequest = (user, setUser) => {
   return (dispatch) => {
     dispatch(actAddUserRequest());
     api
       .post("users", user)
       .then((res) => {
+        setUser(null);
         dispatch(actAddUserSuccess("Thêm người dùng thành công"));
         dispatch(getUserSendRequest());
       })

@@ -57,7 +57,7 @@ const TablePaginationActions = (props) => {
 };
 
 const DataTable = (props) => {
-  const { getJob, data, userData, categoryData } = props;
+  const { getJob, data, userData } = props;
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -65,19 +65,6 @@ const DataTable = (props) => {
   useEffect(() => {
     setPage(0);
   }, [data]);
-
-  const getCategoryName = (id) => {
-    let categoryName = "";
-    categoryData?.forEach((group) => {
-      group.dsChiTietLoai.forEach((category) => {
-        if (category.id === id) {
-          categoryName = category.tenChiTiet;
-          return [categoryName, group];
-        }
-      });
-    });
-    return categoryName;
-  };
 
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
@@ -111,11 +98,12 @@ const DataTable = (props) => {
                 <TableCell align="center">Rating</TableCell>
                 <TableCell align="center">Brief description</TableCell>
                 <TableCell align="center">Description</TableCell>
+                <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0 ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data).map((row) => {
-                let { id, tenCongViec, danhGia, giaTien, nguoiTao, hinhAnh, moTa, maChiTietLoaiCongViec, moTaNgan, saoCongViec } = row;
+                let { id, tenCongViec, danhGia, giaTien, nguoiTao, hinhAnh, moTa, chiTietLoaiCongViec, moTaNgan, saoCongViec } = row;
 
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={id}>
@@ -124,8 +112,8 @@ const DataTable = (props) => {
                       <img width={"100%"} src={hinhAnh} />
                     </TableCell>
                     <TableCell>{tenCongViec}</TableCell>
-                    <TableCell>{userData ? userData.find((user) => user.id === nguoiTao).name : ""}</TableCell>
-                    <TableCell>{getCategoryName(maChiTietLoaiCongViec)}</TableCell>
+                    <TableCell>{userData?.find((user) => user.id === nguoiTao).name}</TableCell>
+                    <TableCell>{chiTietLoaiCongViec}</TableCell>
                     <TableCell>${giaTien}</TableCell>
                     <TableCell>{danhGia}</TableCell>
                     <TableCell>

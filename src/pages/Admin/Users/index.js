@@ -74,7 +74,7 @@ const Users = () => {
       <Box sx={{ width: "100%" }}>
         <TextField
           variant="outlined"
-          label="Search"
+          label="Search user name"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

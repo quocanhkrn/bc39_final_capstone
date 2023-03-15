@@ -30,6 +30,8 @@ const FormDialog = (props) => {
   }, [propUser]);
 
   const handleOnChange = (e) => {
+    dispatch(actAddUserSuccess(null));
+
     const { name, value } = e.target;
 
     setUser((prevUser) => {
@@ -70,7 +72,7 @@ const FormDialog = (props) => {
           ) : (
             ""
           )}
-          <Grid container spacing={2}>
+          <Grid container spacing={2} alignItems={"flex-end"}>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Name"

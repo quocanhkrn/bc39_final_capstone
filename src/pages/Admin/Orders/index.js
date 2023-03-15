@@ -2,34 +2,35 @@ import { AddRounded, SearchRounded } from "@mui/icons-material";
 import { Box, Button, CircularProgress, InputAdornment, Snackbar, TextField, Alert } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actAddJobSuccess, actDeleteJobRequest, getJobSendRequest } from "./_duck/actions";
+import { actAddOrderSuccess, actDeleteOrderRequest, getOrderSendRequest } from "./_duck/actions";
 import DataTable from "./components/Table";
 import FormDialog from "./components/FormDialog";
 import api from "utils/apiUtil";
+import { getJobSendRequest } from "../Jobs/_duck/actions";
+import { getUserSendRequest } from "../Users/_duck/actions";
 
-const Jobs = () => {
+const Users = () => {
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.Admin.GetJob);
-  const { data: deleteSuccessMessage, error: deleteFailMessage } = useSelector((state) => state.Admin.DeleteJob);
-  const [updateJob, setUpdateJob] = useState(null);
-  const [userList, setUserList] = useState(null);
+  const { data: jobList } = useSelector((state) => state.Admin.GetJob);
+  const { data: userList } = useSelector((state) => state.Admin.GetUser);
+  const { loading: getLoading, data } = useSelector((state) => state.Admin.GetOrder);
+  const { loading: deleteLoading, data: deleteSuccessMessage, error: deleteFailMessage } = useSelector((state) => state.Admin.DeleteOrder);
+  const [updateOrder, setUpdateOrder] = useState(null);
+  const [orderList, setOrderList] = useState([]);
   const [categoryList, setCategoryList] = useState(null);
-  const [jobList, setJobList] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [formDialogOpen, setFormDialogOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(getJobSendRequest());
-    dispatch(actDeleteJobRequest());
+    dispatch(getOrderSendRequest());
+    dispatch(actDeleteOrderRequest());
   }, []);
 
   useEffect(() => {
     if (data) {
-      setJobList(data);
-      api
-        .get("users")
-        .then((res) => setUserList(res.data.content))
-        .then(() => api.get("chi-tiet-loai-cong-viec").then((res) => setCategoryList(res.data.content)));
+      setOrderList(data);
+      dispatch(getJobSendRequest());
+      dispatch(getUserSendRequest());
     }
   }, [data]);
 
@@ -41,16 +42,16 @@ const Jobs = () => {
     }
   }, [deleteSuccessMessage, deleteFailMessage]);
 
-  const handleGetJob = (job) => {
-    setUpdateJob(job);
+  const handleGetOrder = (user) => {
+    setUpdateOrder(user);
     setFormDialogOpen(true);
   };
 
-  const handleFormDialogClose = (setJob) => {
+  const handleFormDialogClose = (setOrder) => {
+    dispatch(actAddOrderSuccess(null));
+    setOrder(null);
+    setUpdateOrder(null);
     setFormDialogOpen(false);
-    dispatch(actAddJobSuccess(null));
-    setJob(null);
-    setUpdateJob(null);
   };
 
   const handleSnackbarClose = (e, reason) => {
@@ -64,24 +65,24 @@ const Jobs = () => {
     const keyword = e.target.value.toUpperCase();
 
     if (keyword.trim()) {
-      const newList = [...data].filter((job) => {
-        return job.tenCongViec.toUpperCase().indexOf(keyword) !== -1;
+      const newList = [...data].filter((order) => {
+        return order.nguoiThue.toUpperCase().indexOf(keyword) !== -1;
       });
 
-      setJobList(newList);
+      setOrderList(newList);
     } else {
-      setJobList(data);
+      setOrderList(data);
     }
   };
 
-  document.title = "JOBS MANAGEMENT | FIVERR";
+  document.title = "ORDER MANAGEMENT | FIVERR";
 
   return (
     <>
       <Box sx={{ width: "100%" }}>
         <TextField
           variant="outlined"
-          label="Search job name"
+          label="Search client name"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -95,18 +96,18 @@ const Jobs = () => {
 
         <Button variant="contained" fullWidth sx={{ my: 2 }} onClick={() => setFormDialogOpen(true)}>
           <AddRounded />
-          NEW JOB
+          NEW ORDER
         </Button>
 
         {data ? (
-          <DataTable data={jobList} userData={userList} categoryData={categoryList} getJob={handleGetJob} />
+          <DataTable data={orderList} jobList={jobList} userList={userList} categoryList={categoryList} getOrder={handleGetOrder} />
         ) : (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <CircularProgress />
           </Box>
         )}
 
-        <FormDialog open={formDialogOpen} handleClose={handleFormDialogClose} job={updateJob} userData={userList} categoryData={categoryList} />
+        <FormDialog open={formDialogOpen} handleClose={handleFormDialogClose} order={updateOrder} jobList={jobList} userList={userList} />
 
         <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
           <Alert variant="filled" severity={deleteSuccessMessage ? "success" : "error"} sx={{ width: "100%" }}>
@@ -118,4 +119,4 @@ const Jobs = () => {
   );
 };
 
-export default Jobs;
+export default Users;
