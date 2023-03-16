@@ -15,9 +15,16 @@ export const getJobSendRequest = () => {
         data.forEach((job) => {
           const { maChiTietLoaiCongViec } = job;
 
-          api.get(`chi-tiet-loai-cong-viec/${maChiTietLoaiCongViec}`).then((res) => {
-            job.chiTietLoaiCongViec = res.data.content.tenChiTiet;
-          });
+          api
+            .get(`chi-tiet-loai-cong-viec/${maChiTietLoaiCongViec}`)
+            .then((res) => {
+              job.chiTietLoaiCongViec = res.data.content.tenChiTiet;
+            })
+            .then(() => {
+              api.get(`users/${job.nguoiTao}`).then((res) => {
+                job.tenNguoiTao = res.data.content.name;
+              });
+            });
         });
       })
       .then(() => {

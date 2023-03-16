@@ -54,7 +54,7 @@ export const actAddUserSuccess = (data) => {
   };
 };
 
-const actAddUserFail = (error) => {
+export const actAddUserFail = (error) => {
   return {
     type: TYPES.ADD_USER_FAIL,
     payload: error,

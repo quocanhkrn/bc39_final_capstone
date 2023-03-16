@@ -13,10 +13,6 @@ import {
   ButtonGroup,
   Button,
   Chip,
-  DialogTitle,
-  Dialog,
-  DialogActions,
-  DialogContent,
 } from "@mui/material";
 import { LastPage, FirstPage, KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -129,7 +125,7 @@ const DataTable = (props) => {
                     </TableCell>
                     <TableCell>
                       <ButtonGroup variant="contained" size="small">
-                        <Button onClick={() => getUser(row)}>EDIT</Button>
+                        <Button onClick={() => getUser({ ...row })}>EDIT</Button>
                         <Button color="error" onClick={() => handleDeleteUser(id)}>
                           DELETE
                         </Button>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AppBar, Box, Button, Toolbar, Typography, Tooltip, IconButton, Avatar, Menu, MenuItem, Divider } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MenuRounded } from "@mui/icons-material";
 
 const Navbar = () => {
@@ -146,18 +146,18 @@ const Navbar = () => {
           </Typography>
         </Typography>
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, ml: 2 }}>
-          <Button sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate("/admin/users")}>
-            Users
-          </Button>
-          <Button sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate("/admin/jobs")}>
-            Jobs
-          </Button>
-          <Button sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate("/admin/categories")}>
-            Categories
-          </Button>
-          <Button sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate("/admin/orders")}>
-            Orders
-          </Button>
+          <Link to={"/admin/users"} style={{ textDecoration: "none" }}>
+            <Button sx={{ my: 2, color: "white", display: "block" }}>Users</Button>
+          </Link>
+          <Link to={"/admin/jobs"} style={{ textDecoration: "none" }}>
+            <Button sx={{ my: 2, color: "white", display: "block" }}>Jobs</Button>
+          </Link>
+          <Link to={"/admin/categories"} style={{ textDecoration: "none" }}>
+            <Button sx={{ my: 2, color: "white", display: "block" }}>Categories</Button>
+          </Link>
+          <Link to={"/admin/orders"} style={{ textDecoration: "none" }}>
+            <Button sx={{ my: 2, color: "white", display: "block" }}>Orders</Button>
+          </Link>
         </Box>
         {renderUserOrLogin()}
       </Toolbar>

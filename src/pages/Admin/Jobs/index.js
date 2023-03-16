@@ -99,7 +99,7 @@ const Jobs = () => {
         </Button>
 
         {data ? (
-          <DataTable data={jobList} userData={userList} categoryData={categoryList} getJob={handleGetJob} />
+          <DataTable data={jobList} categoryData={categoryList} getJob={handleGetJob} />
         ) : (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <CircularProgress />

@@ -35,7 +35,7 @@ const Users = () => {
   }, [deleteSuccessMessage, deleteFailMessage]);
 
   const handleGetUser = (user) => {
-    setUpdateUser(user);
+    setUpdateUser({ ...user });
     setFormDialogOpen(true);
   };
 
@@ -54,7 +54,7 @@ const Users = () => {
   };
 
   const handleSearchOnChange = (e) => {
-    const keyword = e.target.value.toUpperCase();
+    const keyword = e.target.value.toUpperCase().trim();
 
     if (keyword.trim()) {
       const newList = [...data].filter((user) => {

@@ -57,13 +57,15 @@ const TablePaginationActions = (props) => {
 };
 
 const DataTable = (props) => {
-  const { getJob, data, userData } = props;
+  const { getJob, data } = props;
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    setPage(0);
+    if (data) {
+      setPage(0);
+    }
   }, [data]);
 
   const handleChangePage = (e, newPage) => {
@@ -103,7 +105,7 @@ const DataTable = (props) => {
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0 ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data).map((row) => {
-                let { id, tenCongViec, danhGia, giaTien, nguoiTao, hinhAnh, moTa, chiTietLoaiCongViec, moTaNgan, saoCongViec } = row;
+                let { id, tenCongViec, danhGia, giaTien, nguoiTao, tenNguoiTao, hinhAnh, moTa, chiTietLoaiCongViec, moTaNgan, saoCongViec } = row;
 
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={id}>
@@ -112,7 +114,7 @@ const DataTable = (props) => {
                       <img width={"100%"} src={hinhAnh} />
                     </TableCell>
                     <TableCell>{tenCongViec}</TableCell>
-                    <TableCell>{userData?.find((user) => user.id === nguoiTao).name}</TableCell>
+                    <TableCell>{tenNguoiTao}</TableCell>
                     <TableCell>{chiTietLoaiCongViec}</TableCell>
                     <TableCell>${giaTien}</TableCell>
                     <TableCell>{danhGia}</TableCell>
